@@ -4888,8 +4888,28 @@ static void HandleEndTurn_BattleWon(void)
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER
             && gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_EREADER_TRAINER))
     {
+        gUnusedFirstBattleVar1 = 0;
+        gUnusedFirstBattleVar2 = 0;
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_FrontierTrainerBattleWon;
+
+        ZeroPlayerPartyMons();
+        
+        for (gUnusedFirstBattleVar1 = 0; gUnusedFirstBattleVar1 <= 5; gUnusedFirstBattleVar1++)
+        {
+            if (GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_SPECIES, NULL) != SPECIES_NONE) {
+                CreateMon(&gPlayerParty[gUnusedFirstBattleVar1],
+                    GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_SPECIES, NULL),
+                    GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_LEVEL, NULL),
+                    31,
+                    TRUE, Random32(),
+                    OT_ID_PLAYER_ID, 0);
+                for (gUnusedFirstBattleVar2 = 0; gUnusedFirstBattleVar2 < MAX_MON_MOVES; gUnusedFirstBattleVar2++)
+                {
+                    SetMonMoveSlot(&gPlayerParty[gUnusedFirstBattleVar1], GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_MOVE1 + gUnusedFirstBattleVar2), gUnusedFirstBattleVar2);
+                }
+            }
+        }
 
         if (gTrainerBattleOpponent_A == TRAINER_FRONTIER_BRAIN)
             PlayBGM(MUS_VICTORY_GYM_LEADER);
@@ -4898,6 +4918,26 @@ static void HandleEndTurn_BattleWon(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
     {
+        gUnusedFirstBattleVar1 = 0;
+        gUnusedFirstBattleVar2 = 0;
+        ZeroPlayerPartyMons();
+
+        for (gUnusedFirstBattleVar1 = 0; gUnusedFirstBattleVar1 <= 5; gUnusedFirstBattleVar1++)
+        {
+            if (GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_SPECIES, NULL) != SPECIES_NONE) {
+                CreateMon(&gPlayerParty[gUnusedFirstBattleVar1],
+                    GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_SPECIES, NULL),
+                    GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_LEVEL, NULL),
+                    31,
+                    TRUE, Random32(),
+                    OT_ID_PLAYER_ID, 0);
+                for (gUnusedFirstBattleVar2 = 0; gUnusedFirstBattleVar2 < MAX_MON_MOVES; gUnusedFirstBattleVar2++)
+                {
+                    SetMonMoveSlot(&gPlayerParty[gUnusedFirstBattleVar1], GetMonData(&gEnemyParty[gUnusedFirstBattleVar1], MON_DATA_MOVE1 + gUnusedFirstBattleVar2), gUnusedFirstBattleVar2);
+                }
+            }
+        }
+
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_LocalTrainerBattleWon;
 
